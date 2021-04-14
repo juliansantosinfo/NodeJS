@@ -1,16 +1,26 @@
-const { update } = require('../models/User');
-const User = require('../models/User');
+const User = require("../models/User");
 
 module.exports = {
-
     async save(req, res) {
-        const { name, email, phone } = req.body;
+        var { name, email, phone, birth, color } = req.body;
+
+        // formate birth
+        [day, month, year] = dateString = birth.split("/");
+
+        birth = new Date(year, month - 1, day);
+
         const user = await User.create({
             name,
             email,
-            phone
+            phone,
+            birth,
+            color,
         });
-        return res.json(user);
+        return res.json({
+            status: true,
+            msg: "success",
+            user: user,
+        });
     },
 
     async remove(req, res) {
@@ -20,14 +30,16 @@ module.exports = {
             if (user) {
                 await user.destroy();
                 res.json({
-                    deleted: true,
-                    msg: "success"
+                    status: true,
+                    msg: "success",
+                    user: user
                 });
             } else {
                 res.json({
-                    deleted: false,
-                    msg: "user not exists"
-                })
+                    status: false,
+                    msg: "user not exists",
+                    user: null
+                });
             }
         } catch (error) {
             res.json(error);
@@ -35,28 +47,64 @@ module.exports = {
     },
 
     async update(req, res) {
-        const { id, name, email, phone} = req.body;
-        const user = await User.findByPk(id);
+
+        const user = await User.findByPk(req.body.id);
+
         if (user) {
-            user.name = name;
-            user.email = email;
-            user.phone = phone;
-            user.save();
-            res.json({
-                changed: true,
-                msg: "success",
-                user: user
-            })
+
+            Object.keys(req.body).forEach((element, index) => {
+                user.setDataValue(element, req.body[element]);
+            });
+
+            try {
+                await user.save();
+                res.json({
+                    status: true,
+                    msg: "success",
+                    user: user,
+                });
+            } catch (error) {
+                res.json({
+                    status: false,
+                    msg: "error in update : " + error,
+                    user: null,
+                });
+            }
+            
         } else {
             res.json({
-                changed: false,
-                msg: "user not exists"
-            })
+                status: false,
+                msg: "user not exists",
+                user: null,
+            });
         }
     },
 
     async list(req, res) {
-        const users = await User.findAll();
-        return res.json(users);
-    }
-}
+        const userId = req.query.id;
+
+        if (userId) {
+            const user = await User.findByPk(userId);
+            if (user) {
+                return res.json({
+                    status: true,
+                    msg: "success",
+                    user: user,
+                });
+            } else {
+                return res.json({
+                    status: false,
+                    msg: "user not exists.",
+                    user: null,
+                });
+            }
+        } else {
+            const users = await User.findAll();
+            return res.json({
+                status: true,
+                msg: "success",
+                users: users,
+            });
+        }
+    },
+};
