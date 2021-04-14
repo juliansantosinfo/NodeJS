@@ -1,0 +1,33 @@
+{
+  "use_env_variable": "development",
+  "development": {
+    "username": "evlwxnzu",
+    "password": "GeuB1p3Lsih2rhy7_wgKTznRbPmutxOq",
+    "database": "evlwxnzu",
+    "host": "tuffi.db.elephantsql.com",
+    "port": "5432",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "evlwxnzu",
+    "password": "GeuB1p3Lsih2rhy7_wgKTznRbPmutxOq",
+    "database": "evlwxnzu",
+    "host": "tuffi.db.elephantsql.com",
+    "port": 5432,
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": true
+    }
+  },
+  "production": {
+    "username": "evlwxnzu",
+    "password": "GeuB1p3Lsih2rhy7_wgKTznRbPmutxOq",
+    "database": "evlwxnzu",
+    "host": "tuffi.db.elephantsql.com",
+    "port": 5432,
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": true
+    }
+  }
+}
