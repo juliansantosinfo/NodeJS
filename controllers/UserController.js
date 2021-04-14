@@ -48,33 +48,36 @@ module.exports = {
 
     async update(req, res) {
 
-        const user = await User.findByPk(req.body.id);
+        try {
 
-        if (user) {
+            var user = await User.findByPk(req.body.id);
 
-            Object.keys(req.body).forEach((element, index) => {
-                user.setDataValue(element, req.body[element]);
-            });
+            if (user) {
 
-            try {
+                await Object.keys(req.body).forEach((element, index) => {
+                    user.setDataValue(element, req.body[element]);
+                });
+
                 await user.save();
+
                 res.json({
                     status: true,
                     msg: "success",
                     user: user,
                 });
-            } catch (error) {
+
+            } else {
                 res.json({
                     status: false,
-                    msg: "error in update : " + error,
+                    msg: "user not exists",
                     user: null,
                 });
             }
-            
-        } else {
+
+        } catch (error) {
             res.json({
                 status: false,
-                msg: "user not exists",
+                msg: "error in update : " + error,
                 user: null,
             });
         }
