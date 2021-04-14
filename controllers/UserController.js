@@ -1,10 +1,10 @@
 const User = require("../models/User");
 
 module.exports = {
+
     async save(req, res) {
         var { name, email, phone, birth, color } = req.body;
 
-        // formate birth
         [day, month, year] = dateString = birth.split("/");
 
         birth = new Date(year, month - 1, day);
@@ -35,14 +35,14 @@ module.exports = {
                     user: user
                 });
             } else {
-                res.json({
+                res.status(400).json({
                     status: false,
                     msg: "user not exists",
                     user: null
                 });
             }
         } catch (error) {
-            res.json(error);
+            res.status(400).json(error);
         }
     },
 
@@ -67,7 +67,7 @@ module.exports = {
                 });
 
             } else {
-                res.json({
+                res.status(400).json({
                     status: false,
                     msg: "user not exists",
                     user: null,
@@ -75,7 +75,7 @@ module.exports = {
             }
 
         } catch (error) {
-            res.json({
+            res.status(400).json({
                 status: false,
                 msg: "error in update : " + error,
                 user: null,
@@ -95,7 +95,7 @@ module.exports = {
                     user: user,
                 });
             } else {
-                return res.json({
+                return res.status(400).json({
                     status: false,
                     msg: "user not exists.",
                     user: null,
