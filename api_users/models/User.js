@@ -1,9 +1,7 @@
-const {Model, DataTypes} = require('sequelize');
-const database = require('../database');
+const { DataTypes } = require("sequelize");
+const db = require("../database");
 
-class User extends Model {};
-
-User.init(
+module.exports = db.sequelize.define('User',
     {
         name: {
             type: DataTypes.STRING,
@@ -26,11 +24,7 @@ User.init(
             allowNull: true,
             defaultValue: 'Black'
         }
-    },{
-        sequelize: database.sequelize
-    }
-)
-
-User.sync({alter: true});
-
-module.exports = User;
+    },
+    {
+        // Other model options go here
+    });

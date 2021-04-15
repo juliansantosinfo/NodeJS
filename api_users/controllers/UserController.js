@@ -3,24 +3,39 @@ const User = require("../models/User");
 module.exports = {
 
     async save(req, res) {
-        var { name, email, phone, birth, color } = req.body;
 
-        [day, month, year] = dateString = birth.split("/");
+        try {
+            var { name, email, phone, birth, color } = req.body;
+            
+            if(birth.indexOf("/") >= 0) {
+                [day, month, year] = birth.split("/");
+            } else if (birth.indexOf("-") >= 0) {
+                [year, month, day] = birth.split("-");
+            }
 
-        birth = new Date(year, month - 1, day);
+            birth = new Date(year, month - 1, day);
 
-        const user = await User.create({
-            name,
-            email,
-            phone,
-            birth,
-            color,
-        });
-        return res.json({
-            status: true,
-            msg: "success",
-            user: user,
-        });
+            const user = await User.create({
+                name,
+                email,
+                phone,
+                birth,
+                color,
+            });
+            res.json({
+                status: true,
+                msg: "success",
+                user: user,
+            });
+        } catch (error) {
+            res
+            .status(400)
+            .json({
+                status: false,
+                msg: "error in insert - " + error,
+                user: null,
+            });
+        }
     },
 
     async remove(req, res) {

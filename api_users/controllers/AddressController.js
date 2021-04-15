@@ -1,11 +1,9 @@
 const Address = require("../models/Address");
-const { update } = require("../models/Address");
-const Adress = require("../models/Address");
 
 module.exports = {
     async save(req, res) {
         try {
-            const address = await Adress.create(req.body);
+            const address = await Address.create(req.body);
 
             res.json({
                 status: true,
@@ -25,7 +23,7 @@ module.exports = {
         const { id } = req.body;
 
         try {
-            const address = await Adress.findByPk(id);
+            const address = await Address.findByPk(id);
             if (address) {
                 (await address).destroy();
                 res.json({
@@ -112,7 +110,13 @@ module.exports = {
                 })
             }
         } catch (error) {
-            
+            res
+            .status(400)
+            .json({
+                status: false,
+                msg: "error in list - " + error,
+                addresses: null
+            })
         }
 
     },
