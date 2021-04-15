@@ -61,6 +61,34 @@ module.exports = {
         }
     },
 
+    async removeAll(req, res) {
+        try {
+            
+            const users = await User.findAll();
+
+            await users.forEach( (user, index) => {
+                user.destroy();
+            });
+
+            res.json({
+                status: true,
+                msg: "success",
+                user: users
+            });
+
+        } catch (error) {
+
+            res
+            .status(400)
+            .json({
+                status: false,
+                msg: "error in delete all - " + error,
+                user: users
+            });
+
+        }
+    },
+
     async update(req, res) {
 
         try {
@@ -99,7 +127,8 @@ module.exports = {
     },
 
     async list(req, res) {
-        const userId = req.query.id;
+        
+        const userId = req.params.user_id;
 
         if (userId) {
             const user = await User.findByPk(userId);
