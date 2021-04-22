@@ -47,6 +47,35 @@ module.exports = {
         }
     },
 
+    async removeAll(req, res) {
+
+        try {
+            
+            const addresses = await Address.findAll();
+
+            await addresses.forEach( (element, index) => {
+                element.destroy();
+            });
+
+            res
+            .status(200)
+            .json({
+                status: true,
+                msg: "success",
+                addresses: addresses
+            });
+
+        } catch (error) {
+            res
+            .status(400)
+            .json({
+                status: false,
+                msg: "error in delete all - " + error,
+                addresses: null
+            })
+        }
+    },
+
     async update(req, res) {
 
         try {

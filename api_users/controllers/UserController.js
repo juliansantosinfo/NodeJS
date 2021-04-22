@@ -70,7 +70,9 @@ module.exports = {
                 user.destroy();
             });
 
-            res.json({
+            res
+            .status(200)
+            .json({
                 status: true,
                 msg: "success",
                 user: users

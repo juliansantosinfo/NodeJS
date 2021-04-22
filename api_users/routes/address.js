@@ -6,6 +6,7 @@ var addressController = require('../controllers/AddressController');
 router.post('/' , addressController.save);
 
 router.delete('/', addressController.remove);
+router.delete('/all', addressController.removeAll);
 
 router.put('/', addressController.update);
 
