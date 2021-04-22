@@ -10,5 +10,6 @@ router.delete('/', addressController.remove);
 router.put('/', addressController.update);
 
 router.get('/', addressController.list);
+router.get('/:user_id', addressController.list);
 
 module.exports  = router

@@ -85,7 +85,7 @@ module.exports = {
     async list(req, res) {
 
         try {
-            const id = req.query.id;
+            const id = req.params.user_id;
             if (id) {
                 const address = await Address.findByPk(id);
                 if (address) {
